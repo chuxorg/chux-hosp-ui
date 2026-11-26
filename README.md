@@ -31,6 +31,10 @@ Sample reservations and simulated sales stay in memory across navigation and res
 
 Dashboard preferences are stored per sample profile, tenant and dashboard on the current browser. The sign-in session exists in memory and resets on reload. The PMS snapshots use 25 November 2026 fixed sample values. The sign-in photograph is generated artwork.
 
+## Connected reservation rehearsal
+
+The [connected reservations guide](docs/CONNECTED_RESERVATIONS.md) covers the disposable PostgreSQL seed, local Auth0 setup, and the live confirm, lookup and cancel walkthrough for [Story #60](https://github.com/chuxorg/chux-hosp-platform/issues/60).
+
 ## Development validation
 
 ```sh
