@@ -1,0 +1,104 @@
+/* Calm Ops */
+:root {
+  color-scheme: light;
+  --brand-accent: #244ebc;
+  --canvas: #f3f6fb;
+  --surface: #ffffff;
+  --surface-subtle: #eef2f6;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #d5dde7;
+  --control-border: #64748b;
+  --focus: #0284c7;
+
+  --pms-fill: #e7efff;
+  --pms-ink: #2454bb;
+  --experience-fill: #f0eafd;
+  --experience-ink: #6847ad;
+  --ops-fill: #dff4eb;
+  --ops-ink: #226953;
+  --shadow: 0 2px 5px #1b315808, 0 10px 28px #1b315805;
+  --rail: #101c33;
+  --rail-text: #d5e0f3;
+  --rail-muted: #aebed7;
+  --rail-active: #253d66;
+  --rail-border: #344563;
+
+  --clean-fill: #dcfce7;
+  --clean-text: #166534;
+  --occupied-fill: #dbeafe;
+  --occupied-text: #1e40af;
+  --dirty-fill: #fef3c7;
+  --dirty-text: #92400e;
+  --out-of-order-fill: #fee2e2;
+  --out-of-order-text: #991b1b;
+  --arriving-fill: #ccfbf1;
+  --arriving-text: #115e59;
+  --departing-fill: #e0e7ff;
+  --departing-text: #3730a3;
+}
+
+/* Slate and sky */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --brand-accent: #38bdf8;
+  --canvas: #0f172a;
+  --surface: #1e293b;
+  --surface-subtle: #26354b;
+  --text: #f1f5f9;
+  --muted: #cbd5e1;
+  --border: #3d4e66;
+  --control-border: #94a3b8;
+  --focus: #38bdf8;
+
+  --pms-fill: #253d65;
+  --pms-ink: #b6d0ff;
+  --experience-fill: #3a3158;
+  --experience-ink: #d7c0ff;
+  --ops-fill: #153d36;
+  --ops-ink: #a2e8d3;
+  --shadow: none;
+
+  --clean-fill: #143327;
+  --clean-text: #86efac;
+  --occupied-fill: #1e3658;
+  --occupied-text: #bfdbfe;
+  --dirty-fill: #493011;
+  --dirty-text: #fcd34d;
+  --out-of-order-fill: #49262d;
+  --out-of-order-text: #fecaca;
+  --arriving-fill: #133d3a;
+  --arriving-text: #99f6e4;
+  --departing-fill: #34305c;
+  --departing-text: #c7d2fe;
+}
+
+.status-badge[data-status='clean'] {
+  --badge-fill: var(--clean-fill);
+  --badge-text: var(--clean-text);
+}
+
+.status-badge[data-status='occupied'] {
+  --badge-fill: var(--occupied-fill);
+  --badge-text: var(--occupied-text);
+}
+
+.status-badge[data-status='dirty'] {
+  --badge-fill: var(--dirty-fill);
+  --badge-text: var(--dirty-text);
+}
+
+.status-badge[data-status='outOfOrder'] {
+  --badge-fill: var(--out-of-order-fill);
+  --badge-text: var(--out-of-order-text);
+}
+
+.status-badge[data-status='arriving'] {
+  --badge-fill: var(--arriving-fill);
+  --badge-text: var(--arriving-text);
+}
+
+.status-badge[data-status='departing'] {
+  --badge-fill: var(--departing-fill);
+  --badge-text: var(--departing-text);
+}
