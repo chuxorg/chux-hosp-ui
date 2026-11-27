@@ -5,7 +5,7 @@ import '@fontsource/noto-sans-thai/thai-400.css'
 import '@fontsource/noto-sans-thai/thai-600.css'
 import '@fontsource/noto-sans-thai/thai-700.css'
 import { Platform } from './Platform'
-import { LiveReservations } from './LiveReservations'
+import { ConnectedPlatform } from './ConnectedPlatform'
 import { parseLiveSeed } from './reservation-api'
 import { brand } from './brand'
 import { messages, type Language } from './messages'
@@ -82,7 +82,7 @@ function App() {
   return live === undefined ? (
     <Platform language={language} preferences={preferences} />
   ) : (
-    <LiveReservations language={language} preferences={preferences} seed={seed} />
+    <ConnectedPlatform language={language} preferences={preferences} seed={seed} />
   )
 }
 

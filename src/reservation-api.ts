@@ -6,7 +6,7 @@ export type LiveSeed = {
   nightlyMinor: number
 }
 
-type Session = { user: { id: number; display_name: string }; csrf_token: string }
+export type Session = { user: { id: number; display_name: string }; csrf_token: string }
 type Terms = {
   currency: 'THB'
   nightly_amount_minor: number
