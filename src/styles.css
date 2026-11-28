@@ -259,7 +259,8 @@ svg {
   justify-content: center;
   gap: 0.45rem;
 }
-button.primary-button {
+button.primary-button,
+.sign-in-form a.primary-button {
   justify-content: space-between;
   min-height: 3.1rem;
   background: var(--brand-accent);
@@ -267,7 +268,14 @@ button.primary-button {
   border-color: var(--brand-accent);
   padding-inline: 1rem;
 }
-button.primary-button:hover {
+.sign-in-form a.primary-button {
+  border: 1px solid var(--brand-accent);
+  border-radius: 0.55rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+button.primary-button:hover,
+.sign-in-form a.primary-button:hover {
   background: color-mix(in srgb, var(--brand-accent) 86%, var(--text));
 }
 
@@ -346,6 +354,9 @@ button.primary-button:hover {
   text-decoration: none;
   font-size: 0.86rem;
   font-weight: 750;
+}
+.app-nav .app-nav-child {
+  margin-inline-start: 1rem;
 }
 .app-nav a[aria-current] {
   color: white;

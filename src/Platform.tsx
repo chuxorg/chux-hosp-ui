@@ -1,19 +1,10 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
-import {
-  ArrowRight,
-  Building2,
-  ChevronRight,
-  LayoutGrid,
-  LockKeyhole,
-  LogOut,
-  Settings,
-  ShieldCheck,
-} from 'lucide-react'
+import { ArrowRight, Building2, ChevronRight, LayoutGrid, Settings, ShieldCheck } from 'lucide-react'
 import { Availability } from './Availability'
 import type { Ledger } from './reservation-demo'
 import { FrontDesk } from './FrontDesk'
 import { Dashboard, moduleIcons, OperatingDate, PropertyDashboard } from './Dashboards'
-import { brand } from './brand'
+import { Landing, Sidebar, SignInHeading, WaypostShell } from './WaypostShell'
 import { dashboardCopy, type DashboardCopy } from './dashboard-copy'
 import { routeFor } from './dashboard-preferences'
 import { canOpen, staff, tenants, type ProfileId, type TenantId, workspaceFor } from './demo'
@@ -25,19 +16,6 @@ type Workspace = NonNullable<ReturnType<typeof workspaceFor>>
 
 function currentRoute() {
   return routeFor(location.hash.slice(1) || 'platform')
-}
-
-function Brand() {
-  return (
-    <div className="brand" lang="en">
-      <span className="brand-mark" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </span>
-      {brand.name}
-    </div>
-  )
 }
 
 function SignIn({
@@ -56,49 +34,34 @@ function SignIn({
   }
 
   return (
-    <div className="sign-in-layout">
-      <div className="landing-image">
-        <Brand />
-        <div className="landing-tagline">{copy.tagline}</div>
-      </div>
-      <main className="sign-in-content">
-        <div className="landing-top">
-          <Brand />
-          {preferences}
-        </div>
-        <form onSubmit={submit} className="sign-in-form">
-          <span className="tile-icon tone-pms">
-            <LockKeyhole size={24} aria-hidden="true" />
-          </span>
-          <p className="preview-label">{copy.demo}</p>
-          <h1 data-view-title tabIndex={-1}>
-            {copy.signIn}
-          </h1>
-          <p>{copy.signInCopy}</p>
-          <label>
-            {copy.profile}
-            <select
-              value={profile}
-              onChange={(event) => setProfile(event.currentTarget.value as ProfileId)}
-            >
-              {profiles.map((id) => (
-                <option key={id} value={id}>
-                  {staff[id].name} · {copy[id]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button className="primary-button" type="submit">
-            {copy.continue}
-            <ArrowRight size={19} aria-hidden="true" />
-          </button>
-          <p className="sign-in-footer">
-            <ShieldCheck size={19} aria-hidden="true" />
-            {copy.signInFooter}
-          </p>
-        </form>
-      </main>
-    </div>
+    <Landing copy={copy} preferences={preferences}>
+      <form onSubmit={submit} className="sign-in-form">
+        <SignInHeading label={copy.demo} title={copy.signIn}>
+          {copy.signInCopy}
+        </SignInHeading>
+        <label>
+          {copy.profile}
+          <select
+            value={profile}
+            onChange={(event) => setProfile(event.currentTarget.value as ProfileId)}
+          >
+            {profiles.map((id) => (
+              <option key={id} value={id}>
+                {staff[id].name} · {copy[id]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button className="primary-button" type="submit">
+          {copy.continue}
+          <ArrowRight size={19} aria-hidden="true" />
+        </button>
+        <p className="sign-in-footer">
+          <ShieldCheck size={19} aria-hidden="true" />
+          {copy.signInFooter}
+        </p>
+      </form>
+    </Landing>
   )
 }
 
@@ -209,60 +172,57 @@ function Navigation({
   signOut: () => void
 }) {
   return (
-    <aside className="app-sidebar">
-      <a href={home} className="brand-link">
-        <Brand />
-      </a>
-      <div className="tenant-box">
-        <span className="tenant-avatar" aria-hidden="true">
-          {tenants[tenant].initials}
-        </span>
-        <div className="tenant-selector">
-          <span id="active-tenant-label">{copy.tenant}</span>
-          {tenantIds.length > 1 ? (
-            <select
-              aria-labelledby="active-tenant-label"
-              value={tenant}
-              onChange={(event) => switchTenant(event.currentTarget.value as TenantId)}
-            >
-              {tenantIds.map((id) => (
-                <option key={id} value={id}>
-                  {tenants[id].name}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <strong lang="en">{tenants[tenant].name}</strong>
-          )}
+    <Sidebar
+      home={home}
+      label={copy.nav}
+      signOut={signOut}
+      signOutLabel={copy.signOut}
+      context={
+        <div className="tenant-box">
+          <span className="tenant-avatar" aria-hidden="true">
+            {tenants[tenant].initials}
+          </span>
+          <div className="tenant-selector">
+            <span id="active-tenant-label">{copy.tenant}</span>
+            {tenantIds.length > 1 ? (
+              <select
+                aria-labelledby="active-tenant-label"
+                value={tenant}
+                onChange={(event) => switchTenant(event.currentTarget.value as TenantId)}
+              >
+                {tenantIds.map((id) => (
+                  <option key={id} value={id}>
+                    {tenants[id].name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <strong lang="en">{tenants[tenant].name}</strong>
+            )}
+          </div>
         </div>
-      </div>
-      <nav className="app-nav" aria-label={copy.nav}>
-        <a href={home} aria-current={area === 'platform' ? 'page' : undefined}>
-          <LayoutGrid size={19} aria-hidden="true" />
-          {copy.platform}
-        </a>
-        {workspace.modules.map((id) => {
-          const Icon = moduleIcons[id]
-          return (
-            <a key={id} href={`#/${id}`} aria-current={area === id ? 'location' : undefined}>
-              <Icon size={19} aria-hidden="true" />
-              {copy[id]}
-            </a>
-          )
-        })}
-        {workspace.settings && (
-          <a href="#/settings" aria-current={area === 'settings' ? 'page' : undefined}>
-            <Settings size={19} aria-hidden="true" />
-            {copy.settings}
+      }
+    >
+      <a href={home} aria-current={area === 'platform' ? 'page' : undefined}>
+        <LayoutGrid size={19} aria-hidden="true" />
+        {copy.platform}
+      </a>
+      {workspace.modules.map((id) => {
+        const Icon = moduleIcons[id]
+        return (
+          <a key={id} href={`#/${id}`} aria-current={area === id ? 'location' : undefined}>
+            <Icon size={19} aria-hidden="true" />
+            {copy[id]}
           </a>
-        )}
-      </nav>
-      <div className="sidebar-bottom">
-        <button onClick={signOut}>
-          <LogOut size={18} aria-hidden="true" /> {copy.signOut}
-        </button>
-      </div>
-    </aside>
+        )
+      })}
+      {workspace.settings && (
+        <a href="#/settings" aria-current={area === 'settings' ? 'page' : undefined}>
+          <Settings size={19} aria-hidden="true" />
+          {copy.settings}
+        </a>
+      )}
+    </Sidebar>
   )
 }
 
@@ -318,161 +278,145 @@ export function Platform({ language, preferences }: { language: Language; prefer
   const sectionTitle = section === 'availability' ? copy.availability : copy.frontDesk
 
   return (
-    <div className="app-shell">
-      <Navigation
-        {...{ workspace, copy, area: allowed ? area : '', tenant, tenantIds }}
-        switchTenant={(id) => {
-          if (tenantIds.includes(id)) {
-            setTenant(id)
+    <WaypostShell
+      context={copy.demo}
+      preferences={preferences}
+      operator={{ ...person, title: copy[person.title] }}
+      sidebar={
+        <Navigation
+          {...{ workspace, copy, area: allowed ? area : '', tenant, tenantIds }}
+          switchTenant={(id) => {
+            if (tenantIds.includes(id)) {
+              setTenant(id)
+              returnHome()
+            }
+          }}
+          signOut={() => {
+            setProfile(null)
             returnHome()
-          }
-        }}
-        signOut={() => {
-          setProfile(null)
-          returnHome()
-        }}
-      />
-      <div className="app-body">
-        <header className="app-topbar">
-          <div className="topbar-context">
-            <span className="preview-dot" />
-            <span>{copy.demo}</span>
-          </div>
-          <div className="topbar-actions">
-            {preferences}
-            <div className="staff-identity">
-              <span className="staff-avatar" aria-hidden="true">
-                {person.initials}
-              </span>
-              <div>
-                <strong lang="en">{person.name}</strong>
-                <span>{copy[person.title]}</span>
-              </div>
+          }}
+        />
+      }
+    >
+      <nav className="breadcrumbs" aria-label={copy.primaryNav}>
+        {allowed && area !== 'platform' ? (
+          <a href={home}>{copy.platform}</a>
+        ) : (
+          <span>{copy.platform}</span>
+        )}
+        {allowed && area !== 'platform' && (
+          <>
+            <ChevronRight size={15} aria-hidden="true" />
+            {property ? (
+              <a href="#/pms">{currentModule}</a>
+            ) : (
+              <span aria-current="page">{currentModule}</span>
+            )}
+          </>
+        )}
+        {property && (
+          <>
+            <ChevronRight size={15} aria-hidden="true" />
+            {section ? (
+              <a href={`#/pms/${property.id}`}>{property.name}</a>
+            ) : (
+              <span aria-current="page">{property.name}</span>
+            )}
+          </>
+        )}
+        {property && section && (
+          <>
+            <ChevronRight size={15} aria-hidden="true" />
+            <span aria-current="page">{sectionTitle}</span>
+          </>
+        )}
+      </nav>
+      {!allowed ? (
+        <section className="app-panel module-preview">
+          <h1 data-view-title tabIndex={-1}>
+            {copy.unavailableView}
+          </h1>
+          <p>{copy.unavailableCopy}</p>
+          <a className="card-action" href={workspace.modules.includes('pms') ? '#/pms' : home}>
+            {workspace.modules.includes('pms') ? copy.portfolio : copy.backPlatform}
+            <ArrowRight size={17} aria-hidden="true" />
+          </a>
+        </section>
+      ) : area === 'platform' || (area === 'pms' && !property) ? (
+        <Dashboard
+          key={`${profile}/${tenant}/${area}`}
+          kind={area}
+          {...{ workspace, profile, tenant, language }}
+          name={person.name}
+        />
+      ) : area === 'settings' ? (
+        <>
+          <div className="dashboard-heading">
+            <div>
+              <h1 data-view-title tabIndex={-1}>
+                {copy.settings}
+              </h1>
+              <p>{copy.settingsIntro}</p>
             </div>
           </div>
-        </header>
-        <main className="app-content">
-          <nav className="breadcrumbs" aria-label={copy.primaryNav}>
-            {allowed && area !== 'platform' ? (
-              <a href={home}>{copy.platform}</a>
-            ) : (
-              <span>{copy.platform}</span>
-            )}
-            {allowed && area !== 'platform' && (
-              <>
-                <ChevronRight size={15} aria-hidden="true" />
-                {property ? (
-                  <a href="#/pms">{currentModule}</a>
-                ) : (
-                  <span aria-current="page">{currentModule}</span>
-                )}
-              </>
-            )}
-            {property && (
-              <>
-                <ChevronRight size={15} aria-hidden="true" />
-                {section ? (
-                  <a href={`#/pms/${property.id}`}>{property.name}</a>
-                ) : (
-                  <span aria-current="page">{property.name}</span>
-                )}
-              </>
-            )}
-            {property && section && (
-              <>
-                <ChevronRight size={15} aria-hidden="true" />
-                <span aria-current="page">{sectionTitle}</span>
-              </>
-            )}
-          </nav>
-          {!allowed ? (
-            <section className="app-panel module-preview">
+          <SettingsPreview key={tenant} {...{ language, tenant }} />
+        </>
+      ) : property && !section ? (
+        <PropertyDashboard {...{ property, language }} />
+      ) : property ? (
+        <>
+          <div className="dashboard-heading">
+            <div>
               <h1 data-view-title tabIndex={-1}>
-                {copy.unavailableView}
+                {sectionTitle}
               </h1>
-              <p>{copy.unavailableCopy}</p>
-              <a className="card-action" href={workspace.modules.includes('pms') ? '#/pms' : home}>
-                {workspace.modules.includes('pms') ? copy.portfolio : copy.backPlatform}
-                <ArrowRight size={17} aria-hidden="true" />
-              </a>
-            </section>
-          ) : area === 'platform' || (area === 'pms' && !property) ? (
-            <Dashboard
-              key={`${profile}/${tenant}/${area}`}
-              kind={area}
-              {...{ workspace, profile, tenant, language }}
-              name={person.name}
+              <p>
+                {property.name} · {property.location}
+              </p>
+            </div>
+            <OperatingDate {...{ copy, language }} />
+          </div>
+          {section === 'availability' ? (
+            <Availability
+              key={property.id}
+              property={property.id}
+              language={language}
+              ledger={ledgers[tenant] ?? { reservations: [], sales: [] }}
+              update={(ledger) => setLedgers((previous) => ({ ...previous, [tenant]: ledger }))}
             />
-          ) : area === 'settings' ? (
-            <>
-              <div className="dashboard-heading">
-                <div>
-                  <h1 data-view-title tabIndex={-1}>
-                    {copy.settings}
-                  </h1>
-                  <p>{copy.settingsIntro}</p>
-                </div>
+          ) : (
+            <FrontDesk {...{ language, property }} />
+          )}
+        </>
+      ) : module && module !== 'pms' ? (
+        <>
+          <div className="dashboard-heading">
+            <div>
+              <h1 data-view-title tabIndex={-1}>
+                {copy[module]}
+              </h1>
+              <p>{copy[`${module}Copy`]}</p>
+            </div>
+          </div>
+          <section className="app-panel module-preview">
+            <div className="section-heading">
+              <span className={`tile-icon tone-${module}`}>
+                <Building2 size={20} aria-hidden="true" />
+              </span>
+              <div>
+                <h2>{copy.accessPreview}</h2>
+                <p>{copy.modulePreview}</p>
               </div>
-              <SettingsPreview key={tenant} {...{ language, tenant }} />
-            </>
-          ) : property && !section ? (
-            <PropertyDashboard {...{ property, language }} />
-          ) : property ? (
-            <>
-              <div className="dashboard-heading">
-                <div>
-                  <h1 data-view-title tabIndex={-1}>
-                    {sectionTitle}
-                  </h1>
-                  <p>
-                    {property.name} · {property.location}
-                  </p>
-                </div>
-                <OperatingDate {...{ copy, language }} />
-              </div>
-              {section === 'availability' ? (
-                <Availability
-                  key={property.id}
-                  property={property.id}
-                  language={language}
-                  ledger={ledgers[tenant] ?? { reservations: [], sales: [] }}
-                  update={(ledger) => setLedgers((previous) => ({ ...previous, [tenant]: ledger }))}
-                />
-              ) : (
-                <FrontDesk {...{ language, property }} />
-              )}
-            </>
-          ) : module && module !== 'pms' ? (
-            <>
-              <div className="dashboard-heading">
-                <div>
-                  <h1 data-view-title tabIndex={-1}>
-                    {copy[module]}
-                  </h1>
-                  <p>{copy[`${module}Copy`]}</p>
-                </div>
-              </div>
-              <section className="app-panel module-preview">
-                <div className="section-heading">
-                  <span className={`tile-icon tone-${module}`}>
-                    <Building2 size={20} aria-hidden="true" />
-                  </span>
-                  <div>
-                    <h2>{copy.accessPreview}</h2>
-                    <p>{copy.modulePreview}</p>
-                  </div>
-                </div>
-                <h3>{copy.moduleFeatures}</h3>
-                <ul>
-                  {copy[`${module}Scope`].map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            </>
-          ) : null}
-        </main>
-      </div>
-    </div>
+            </div>
+            <h3>{copy.moduleFeatures}</h3>
+            <ul>
+              {copy[`${module}Scope`].map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+        </>
+      ) : null}
+    </WaypostShell>
   )
 }

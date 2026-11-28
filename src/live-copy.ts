@@ -1,12 +1,16 @@
 import type { Language } from './messages'
 
 const en = {
+  reservations: 'Reservations',
   heading: 'Connected reservations',
   environment: 'Local PMS rehearsal · synthetic inventory',
   signIn: 'Sign in with Auth0',
   sessionCheck: 'Check session',
-  signInHelp: 'Sign in in the new tab, then return here and check your session.',
+  signInHelp:
+    'Sign in in the new tab, then return to Waypost. You can also check your session manually.',
   endSession: 'End Waypost session',
+  sessionUnavailable: 'Waypost could not verify your session. Try again.',
+  sessionMissing: 'No Waypost session was found. Complete sign-in in the Auth0 tab and try again.',
   seedExplanation:
     'Review uses the seeded nightly rate. The server checks the price and inventory when you confirm.',
   unavailable: 'The connected rehearsal configuration is invalid.',
@@ -35,12 +39,15 @@ const en = {
 export const liveCopy = {
   en,
   th: {
+    reservations: 'การจอง',
     heading: 'การจองที่เชื่อมต่อกับ PMS',
     environment: 'ทดสอบ PMS บนเครื่อง · ข้อมูลห้องพักจำลอง',
     signIn: 'เข้าสู่ระบบด้วย Auth0',
     sessionCheck: 'ตรวจสอบเซสชัน',
-    signInHelp: 'เข้าสู่ระบบในแท็บใหม่ แล้วกลับมาตรวจสอบเซสชันที่นี่',
+    signInHelp: 'เข้าสู่ระบบในแท็บใหม่ แล้วกลับมาที่ Waypost คุณสามารถตรวจสอบเซสชันที่นี่ได้ด้วย',
     endSession: 'ออกจากเซสชัน Waypost',
+    sessionUnavailable: 'Waypost ไม่สามารถตรวจสอบเซสชันของคุณได้ โปรดลองอีกครั้ง',
+    sessionMissing: 'ไม่พบเซสชัน Waypost โปรดเข้าสู่ระบบในแท็บ Auth0 แล้วลองอีกครั้ง',
     seedExplanation: 'ราคาที่แสดงมาจากข้อมูลทดสอบ ระบบจะตรวจสอบราคาและห้องว่างเมื่อยืนยัน',
     unavailable: 'การตั้งค่าสำหรับการทดสอบไม่ถูกต้อง',
     estimate: 'ยอดค่าที่พักโดยประมาณ',
